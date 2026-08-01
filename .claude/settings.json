@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(go version *)",
+      "Bash(readelf -S mini-nc)",
+      "Bash(cd /home/atandabo/apps/minisocket; strings -n 6 mini-nc > /tmp/mnc_strings.txt; wc -l /tmp/mnc_strings.txt; echo \"=== minisocket symbols ===\"; grep -aoE '\\\\bminisocket\\(/[a-zA-Z0-9_./]+\\)?\\\\.[A-Za-z0-9_.\\(\\)*]+' mini-nc | sort -u | head -120)",
+      "Read(//tmp/**)",
+      "Bash(grep -aoE '\\(\\([0-9]{1,3}\\\\.\\){3}[0-9]{1,3}\\(:[0-9]{1,5}\\)?\\)|\\(https?://[^ \"]{4,80}\\)|\\([a-z0-9-]+\\\\.\\(com|net|org|io|ru|cn|xyz|top|onion|duckdns|ddns|no-ip\\)[a-z.]*\\)' mini-nc)",
+      "Bash(grep -aE '^[ -~]{8,90}$')",
+      "Bash(grep -n 'mini-nc' /tmp/mnc_strings.txt | head)",
+      "Bash(objdump -d --start-address=0x4efc40 --stop-address=0x4efce0 -M intel mini-nc)",
+      "Bash(grep -vE '^$|file format|Disassembly')",
+      "Bash(objdump -d --start-address=0x4efce0 --stop-address=0x4efdc0 -M intel mini-nc)",
+      "Bash(python3 /tmp/gosyms/vaddr.py mini-nc 0x52a5fd:11 0x52a608:11)",
+      "Bash(/tmp/gosyms/gosyms mini-nc *)",
+      "Bash(objdump -d --start-address=0x4f04a0 --stop-address=0x4f0700 -M intel mini-nc)",
+      "Bash(objdump -d --start-address=0x4f08a8 --stop-address=0x4f09c0 -M intel mini-nc)",
+      "Bash(python3 /tmp/gosyms/strs.py)"
+    ],
+    "additionalDirectories": [
+      "/tmp/gosyms"
+    ]
+  }
+}
