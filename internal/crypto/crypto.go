@@ -7,6 +7,7 @@ import (
 	"crypto/sha256"
 	"fmt"
 	"io"
+	"math/big"
 
 	"golang.org/x/crypto/pbkdf2"
 )
@@ -89,4 +90,22 @@ func Decrypt(key, ciphertext []byte) ([]byte, error) {
 		return nil, fmt.Errorf("decrypt: gcm open: %w", err)
 	}
 	return plaintext, nil
+}
+
+// secretChars is the alphabet for generated secrets: alphanumeric, 22 chars.
+const secretChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+const secretLen = 22
+
+// GenRandomSecret generates a cryptographically random 22-character secret
+// using the same alphabet and length as the original binary.
+func GenRandomSecret() (string, error) {
+	result := make([]byte, secretLen)
+	for i := range result {
+		n, err := rand.Int(rand.Reader, big.NewInt(int64(len(secretChars))))
+		if err != nil {
+			return "", fmt.Errorf("gen random secret: %w", err)
+		}
+		result[i] = secretChars[n.Int64()]
+	}
+	return string(result), nil
 }
